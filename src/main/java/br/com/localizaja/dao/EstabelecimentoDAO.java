@@ -1,7 +1,6 @@
 package br.com.localizaja.dao;
 
 import br.com.localizaja.entidade.Estabelecimento;
-import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -25,7 +24,7 @@ public class EstabelecimentoDAO {
         entityManager.persist(estabelecimento);
     }
 
-    public List<Estabelecimento> getEstabelecimentosPorLocalizacao(BigDecimal latitude, BigDecimal longitude, Integer distancia, String... seguimentos) {
+    public List<Estabelecimento> getEstabelecimentosPorLocalizacao(Double latitude, Double longitude, Integer distancia, String... seguimentos) {
         StringBuilder b = new StringBuilder();
         b.append("SELECT * FROM ESTABELECIMENTO EST");
         b.append(" INNER JOIN ENDERECO ENDERECO            ON (EST.ENDERECO_ID = ENDERECO.ID)");

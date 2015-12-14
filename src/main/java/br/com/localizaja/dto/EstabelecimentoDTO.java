@@ -5,8 +5,6 @@
  */
 package br.com.localizaja.dto;
 
-import java.math.BigDecimal;
-
 /**
  *
  * @author Daniel
@@ -20,8 +18,8 @@ public class EstabelecimentoDTO {
     private String enderecoCompleto;
     private String telefone;
     private String categoria;
-    private BigDecimal latitude;
-    private BigDecimal longitude;
+    private Double latitude;
+    private Double longitude;
 
     public String getNomeEmpresa() {
         return nomeEmpresa;
@@ -63,19 +61,19 @@ public class EstabelecimentoDTO {
         this.categoria = categoria;
     }
 
-    public BigDecimal getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(BigDecimal latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public BigDecimal getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(BigDecimal longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 

@@ -67,15 +67,15 @@ public class BuscaEstabelecimentoMB {
     }
 
     public void buscarEnderecos() {
-//        try {
-//            estabelecimentos = servico.getEstabelecimentosPorLocalizacao(buscaEstabelecimentoDTO);
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//            FacesMessageUtil.addMensagemError("Não foi possível buscar endereços: " + ex);
-//            estabelecimentos = null;
-//        }
+        try {
+            estabelecimentos = servico.getEstabelecimentosPorLocalizacao(buscaEstabelecimentoDTO);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            FacesMessageUtil.addMensagemError("Não foi possível buscar endereços: " + ex);
+            estabelecimentos = null;
+        }
 
-        List<String> categorias = Arrays.asList(buscaEstabelecimentoDTO.getSeguimento().split(","));
+        /*List<String> categorias = Arrays.asList(buscaEstabelecimentoDTO.getSeguimento().split(","));
 
         for (String categoria : categorias) {
 
@@ -86,9 +86,8 @@ public class BuscaEstabelecimentoMB {
             } catch (Exception ex) {
                 // TODO handle custom exceptions here
             }
-
-        }
-
+$
+        }*/
     }
 
     public void onMarkerSelect(OverlaySelectEvent event) {

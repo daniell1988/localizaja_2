@@ -1,7 +1,6 @@
 package br.com.localizaja.entidade;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,15 +22,15 @@ public class CoordenadasGeograficas implements Serializable {
     private Long id;
 
     @Column
-    private BigDecimal latitude;
+    private Double latitude;
 
     @Column
-    private BigDecimal longitude;
+    private Double longitude;
 
     public CoordenadasGeograficas() {
     }
 
-    public CoordenadasGeograficas(BigDecimal latitude, BigDecimal longitude) {
+    public CoordenadasGeograficas(Double latitude, Double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -44,19 +43,19 @@ public class CoordenadasGeograficas implements Serializable {
         this.id = id;
     }
 
-    public BigDecimal getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(BigDecimal latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public BigDecimal getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(BigDecimal longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 

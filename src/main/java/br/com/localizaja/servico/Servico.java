@@ -10,7 +10,6 @@ import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.LatLng;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -47,22 +46,22 @@ public class Servico {
 
         for (GeocodingResult end : resultadoEnderecos) {
             enderecos.add(new GeoLocation(
-                    new BigDecimal(end.geometry.location.lat),
-                    new BigDecimal(end.geometry.location.lng),
+                    end.geometry.location.lat,
+                    end.geometry.location.lng,
                     end.formattedAddress));
         }
 
         return enderecos;
     }
 
-    public GeoLocation getEndereco(BigDecimal latitude, BigDecimal longitude) throws Exception {
+    public GeoLocation getEndereco(Double latitude, Double longitude) throws Exception {
         GeoApiContext context = new GeoApiContext().setApiKey(KEY_MAPS);
-        GeocodingResult[] results = GeocodingApi.reverseGeocode(context, new LatLng(latitude.doubleValue(), longitude.doubleValue())).await();
+        GeocodingResult[] results = GeocodingApi.reverseGeocode(context, new LatLng(latitude, longitude)).await();
 
         GeocodingResult result = results[0];
         return new GeoLocation(
-                new BigDecimal(result.geometry.location.lat),
-                new BigDecimal(result.geometry.location.lng),
+                result.geometry.location.lat,
+                result.geometry.location.lng,
                 result.formattedAddress);
     }
 
@@ -71,8 +70,6 @@ public class Servico {
     }
 
     public List<EstabelecimentoDTO> getEstabelecimentosPorLocalizacao(BuscaEstabelecimentoDTO buscaEstabelecimentoDTO) {
-        List<EstabelecimentoDTO> resultadoEnderecos = new ArrayList<>();
-
         List<Estabelecimento> estabelecimentosPorLocalizacao = estabelecimentoDAO.getEstabelecimentosPorLocalizacao(
                 buscaEstabelecimentoDTO.getLatitude(),
                 buscaEstabelecimentoDTO.getLongitude(),
