@@ -6,6 +6,8 @@ import br.com.localizaja.servico.Servico;
 import br.com.localizaja.dto.GeoLocation;
 import br.com.localizaja.loaddata.CarregarBanco;
 import br.com.localizaja.util.FacesMessageUtil;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -13,6 +15,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.swing.text.StyledEditorKit;
+import leilaoonline.web.full.wsclient.ConsultaLeilaoWS;
+import leilaoonline.web.full.wsclient.ConsultaLeilaoWS_Service;
+import leilaoonline.web.full.wsclient.LeilaoVO;
 import org.primefaces.event.map.OverlaySelectEvent;
 import org.primefaces.model.map.Marker;
 
@@ -32,6 +38,7 @@ public class BuscaEstabelecimentoMB {
 
     private List<EstabelecimentoDTO> estabelecimentos;
     private BuscaEstabelecimentoDTO buscaEstabelecimentoDTO;
+    private List<LeilaoVO> leiloes = new ArrayList<>();
 
     private GeoLocation enderecoSelecionado;
 
@@ -60,13 +67,28 @@ public class BuscaEstabelecimentoMB {
     }
 
     public void buscarEnderecos() {
-        try {
-            estabelecimentos = servico.getEstabelecimentosPorLocalizacao(buscaEstabelecimentoDTO);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            FacesMessageUtil.addMensagemError("Não foi possível buscar endereços: " + ex);
-            estabelecimentos = null;
+//        try {
+//            estabelecimentos = servico.getEstabelecimentosPorLocalizacao(buscaEstabelecimentoDTO);
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//            FacesMessageUtil.addMensagemError("Não foi possível buscar endereços: " + ex);
+//            estabelecimentos = null;
+//        }
+
+        List<String> categorias = Arrays.asList(buscaEstabelecimentoDTO.getSeguimento().split(","));
+
+        for (String categoria : categorias) {
+
+            try { // Call Web Service Operation
+                ConsultaLeilaoWS_Service service = new ConsultaLeilaoWS_Service();
+                ConsultaLeilaoWS port = service.getConsultaLeilaoWSPort();
+                this.leiloes = port.obterLeiloesPorNomeCategoria(categoria);
+            } catch (Exception ex) {
+                // TODO handle custom exceptions here
+            }
+
         }
+
     }
 
     public void onMarkerSelect(OverlaySelectEvent event) {
@@ -122,4 +144,22 @@ public class BuscaEstabelecimentoMB {
     public void setBuscaEstabelecimentoDTO(BuscaEstabelecimentoDTO buscaEstabelecimentoDTO) {
         this.buscaEstabelecimentoDTO = buscaEstabelecimentoDTO;
     }
+
+    public CarregarBanco getCarregarBanco() {
+        return carregarBanco;
+    }
+
+    public void setCarregarBanco(CarregarBanco carregarBanco) {
+        this.carregarBanco = carregarBanco;
+    }
+
+    public List<LeilaoVO> getLeiloes() {
+        return leiloes;
+    }
+
+    public void setLeiloes(List<LeilaoVO> leiloes) {
+        this.leiloes = leiloes;
+    }
+    
+    
 }

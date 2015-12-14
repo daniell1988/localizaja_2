@@ -6,12 +6,16 @@
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
         <title>Cadastro de estabelecimento</title>
-        <script src="http://maps.google.com/maps/api/js?sensor=true|false" type="text/javascript"></script> 
+        <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script> 
+        
     </h:head>
     <h:body>
+        
         <script type="text/javascript">
+
+            
             function geocode() {
-                var end = " ";
+                var end = "";
                 PF('geoMap').geocode(
                         end.concat(
                                 document.getElementById('endereco').value,
@@ -57,7 +61,7 @@
                                                  process="formularioCadastro" update="enderecosBuscados, mensagens"/>
                             </h:panelGrid>
                         </h:panelGroup>
-                        <h:panelGroup>
+                        <h:panelGroup >
                             <p:gmap id="geoGmap" widgetVar="geoMap" center="#{geocodeView.centerGeoMap}" zoom="11" type="ROADMAP" model="#{geocodeView.geoModel}" style="width:1000px;height:550px">
                                 <p:ajax event="geocode" listener="#{geocodeView.onGeocode}" update="@this"/>
                             </p:gmap>

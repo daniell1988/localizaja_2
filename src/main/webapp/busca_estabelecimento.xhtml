@@ -38,13 +38,27 @@
             <p:growl id="mensagens" showDetail="true" sticky="true" /> 
 
             <p:fieldset legend="Busca">
-                <h3 style="margin-top:0">
-                    <p:commandLink value="Cadastrar Novo Estabelecimento" action="#{buscaEstabelecimentoMB.goToCadastro()}"/>
-                </h3>
                 <p:outputPanel id="formularioPesquisa">
                     <h:panelGrid id="panelGridGeral" columns="2" style="margin-bottom:10px" cellpadding="1">
                         <h:panelGroup>
                             <h:panelGrid id="panelGridForm" columns="1" style="margin-bottom:10px" cellpadding="1">
+                                <p:outputPanel id="localizacaoUsuario">
+                                    <p:outputLabel for="endereco" value="Endereço Inicial:" />
+                                    <br/>
+                                    <p:inputText id="endereco" value="#{buscaEstabelecimentoMB.buscaEstabelecimentoDTO.enderecoOrigem}" />
+                                    <h:inputHidden id="latitude" value="#{buscaEstabelecimentoMB.buscaEstabelecimentoDTO.latitude}"/>
+                                    <h:inputHidden id="longitude" value="#{buscaEstabelecimentoMB.buscaEstabelecimentoDTO.longitude}"/>
+                                    <p:commandLink id="minhaLocalizacao"
+                                                   onstart="getLocation()" action="#{buscaEstabelecimentoMB.buscarMinhaLocalizacao}"
+                                                   update="mensagens,localizacaoUsuario"
+                                                   oncomplete="geocode();">
+                                        <p:graphicImage id="gps"
+                                                        value="resources/gps.png"
+                                                        width="25"
+                                                        height="25">
+                                        </p:graphicImage>
+                                    </p:commandLink>
+                                </p:outputPanel>
                                 <p:outputLabel for="seguimento" value="Segmento:" />
                                 <p:inputText id="seguimento" value="#{buscaEstabelecimentoMB.buscaEstabelecimentoDTO.seguimento}"/>
                                 <p:watermark for="seguimento" value="Separe por ," id="watermark" />
@@ -53,19 +67,13 @@
                                 <h:inputHidden id="raio" value="#{buscaEstabelecimentoMB.buscaEstabelecimentoDTO.raio}" />
                                 <p:slider for="raio" minValue="0" maxValue="50" display="output" style="width: 200px" displayTemplate="Raio de busca {value} Km" />
                                 <br/>
-                                <p:outputPanel id="localizacaoUsuario">
-                                    <p:outputLabel for="endereco" value="Endereço Inicial:" />
-                                    <p:inputText id="endereco" value="#{buscaEstabelecimentoMB.buscaEstabelecimentoDTO.enderecoOrigem}" />
-                                    <h:inputHidden id="latitude" value="#{buscaEstabelecimentoMB.buscaEstabelecimentoDTO.latitude}"/>
-                                    <h:inputHidden id="longitude" value="#{buscaEstabelecimentoMB.buscaEstabelecimentoDTO.longitude}"/>
-                                    <p:commandLink id="minhaLocalizacao" value="Buscar minha localização"
-                                                   onstart="getLocation()" action="#{buscaEstabelecimentoMB.buscarMinhaLocalizacao}"
-                                                   update="mensagens,localizacaoUsuario"
-                                                   oncomplete="geocode();"/>
-                                </p:outputPanel>
+                                
                                 <p:commandButton id="cadastroButton" value="Buscar" icon="ui-icon-search" onclick="geocode();"
                                                  action="#{buscaEstabelecimentoMB.buscarEnderecos()}"
                                                  process="formularioPesquisa" update="enderecosBuscados"/>
+                                <h3 style="margin-top:0">
+                                    <p:commandButton value="Cadastrar Novo Estabelecimento" action="#{buscaEstabelecimentoMB.goToCadastro()}"/>
+                                </h3>
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -85,7 +93,20 @@
                         <h:outputText value="#{item.telefone}"/>
                     </p:column>
                 </p:dataTable>
-            <p:commandButton value="Carregar banco" action="#{buscaEstabelecimentoMB.carregarBanco}"/>
+                <p:dataTable id="leiloesBuscados" value="#{buscaEstabelecimentoMB.leiloes}" var="leilao">
+                    <f:facet name="header">
+                        Leilões Disponíveis de Categorias Buscadas:
+                    </f:facet>
+                    <p:column headerText="Título">
+                        <h:outputText value="#{leilao.titulo}"/>
+                    </p:column>
+                    <p:column headerText="URL">
+                        <p:commandLink value="#{leilao.link}"/>
+                    </p:column>
+                </p:dataTable>
+
+                <p:commandButton value="Carregar banco" action="#{buscaEstabelecimentoMB.carregarBanco}"/>
+
             </p:fieldset>
         </h:form>
     </h:body>

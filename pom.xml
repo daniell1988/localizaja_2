@@ -7,7 +7,7 @@
     <version>0.1-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>LocalizaJa_2</name>
+    <name>LocalizaJa</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>

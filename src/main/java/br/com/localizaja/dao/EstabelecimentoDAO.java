@@ -39,7 +39,7 @@ public class EstabelecimentoDAO {
         for (String seguimento : seguimentos) {
             b.append("(LOWER(SEG.NOME) LIKE '%").append(seguimento.toLowerCase()).append("%' ) OR");
         }
-        b.append(" (1 = 1)) AND");
+        b.append(" (1 = 1))");
 
         Query query = entityManager.createNativeQuery(b.toString());
         query.setParameter(1, latitude);
