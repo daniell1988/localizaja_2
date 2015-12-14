@@ -93,6 +93,7 @@
                         <h:outputText value="#{item.telefone}"/>
                     </p:column>
                 </p:dataTable>
+                <p:spacer height="20px" />
                 <p:dataTable id="leiloesBuscados" value="#{buscaEstabelecimentoMB.leiloes}" var="leilao">
                     <f:facet name="header">
                         Leilões Disponíveis de Categorias Buscadas:
@@ -104,9 +105,6 @@
                         <p:commandLink value="#{leilao.link}"/>
                     </p:column>
                 </p:dataTable>
-
-                <p:commandButton value="Carregar banco" action="#{buscaEstabelecimentoMB.carregarBanco}"/>
-
             </p:fieldset>
         </h:form>
     </h:body>

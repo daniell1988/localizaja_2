@@ -29,33 +29,35 @@ import org.primefaces.model.map.Marker;
 @ManagedBean
 @ViewScoped
 public class BuscaEstabelecimentoMB {
-
+    
     @EJB
     private Servico servico;
-
+    
     @EJB
     private CarregarBanco carregarBanco;
-
+    
     private List<EstabelecimentoDTO> estabelecimentos;
     private BuscaEstabelecimentoDTO buscaEstabelecimentoDTO;
     private List<LeilaoVO> leiloes = new ArrayList<>();
-
+    
     private GeoLocation enderecoSelecionado;
-
+    
+    private String pathFile;
+    
     @PostConstruct
     public void inicia() {
         buscaEstabelecimentoDTO = new BuscaEstabelecimentoDTO();
         buscaEstabelecimentoDTO.setRaio(4);
     }
-
+    
     public void carregarBanco() {
         try {
-            carregarBanco.carrega();
+            carregarBanco.carrega(pathFile);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-
+    
     public void buscarMinhaLocalizacao() {
         try {
             GeoLocation endereco = servico.getEndereco(buscaEstabelecimentoDTO.getLatitude(), buscaEstabelecimentoDTO.getLongitude());
@@ -65,9 +67,13 @@ public class BuscaEstabelecimentoMB {
             ex.printStackTrace();
         }
     }
-
+    
     public void buscarEnderecos() {
         try {
+            GeoLocation endereco = servico.getEndereco(buscaEstabelecimentoDTO.getLatitude(), buscaEstabelecimentoDTO.getLongitude());
+            buscaEstabelecimentoDTO.setLatitude(endereco.getLatitute());
+            buscaEstabelecimentoDTO.setLongitude(endereco.getLongitute());
+            buscaEstabelecimentoDTO.setEnderecoOrigem(endereco.getEnderecoCompleto());
             estabelecimentos = servico.getEstabelecimentosPorLocalizacao(buscaEstabelecimentoDTO);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -89,17 +95,17 @@ public class BuscaEstabelecimentoMB {
 $
         }*/
     }
-
+    
     public void onMarkerSelect(OverlaySelectEvent event) {
         Marker marker = (Marker) event.getOverlay();
-
+        
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Marker Selected", marker.getTitle()));
     }
-
+    
     public String goToCadastro() {
         return "cadastro_estabelecimento.xhtml";
     }
-
+    
     public String getMyLocation() {
         String location = "-23.550717006921673, -46.63357400000001";
         try {
@@ -111,54 +117,61 @@ $
         }
         return location;
     }
-
+    
     public GeoLocation getEnderecoSelecionado() {
         return enderecoSelecionado;
     }
-
+    
     public void setEnderecoSelecionado(GeoLocation enderecoSelecionado) {
         this.enderecoSelecionado = enderecoSelecionado;
     }
-
+    
     public Servico getServico() {
         return servico;
     }
-
+    
     public void setServico(Servico servico) {
         this.servico = servico;
     }
-
+    
     public List<EstabelecimentoDTO> getEstabelecimentos() {
         return estabelecimentos;
     }
-
+    
     public void setEstabelecimentos(List<EstabelecimentoDTO> estabelecimentos) {
         this.estabelecimentos = estabelecimentos;
     }
-
+    
     public BuscaEstabelecimentoDTO getBuscaEstabelecimentoDTO() {
         return buscaEstabelecimentoDTO;
     }
-
+    
     public void setBuscaEstabelecimentoDTO(BuscaEstabelecimentoDTO buscaEstabelecimentoDTO) {
         this.buscaEstabelecimentoDTO = buscaEstabelecimentoDTO;
     }
-
+    
     public CarregarBanco getCarregarBanco() {
         return carregarBanco;
     }
-
+    
     public void setCarregarBanco(CarregarBanco carregarBanco) {
         this.carregarBanco = carregarBanco;
     }
-
+    
     public List<LeilaoVO> getLeiloes() {
         return leiloes;
     }
-
+    
     public void setLeiloes(List<LeilaoVO> leiloes) {
         this.leiloes = leiloes;
     }
     
+    public String getPathFile() {
+        return pathFile;
+    }
+    
+    public void setPathFile(String pathFile) {
+        this.pathFile = pathFile;
+    }
     
 }

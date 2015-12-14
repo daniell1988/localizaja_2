@@ -5,7 +5,6 @@ import br.com.localizaja.dto.BuscaEstabelecimentoDTO;
 import br.com.localizaja.dto.EstabelecimentoDTO;
 import br.com.localizaja.dto.GeoLocation;
 import br.com.localizaja.entidade.Estabelecimento;
-import br.com.localizaja.util.EntityConverter;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
@@ -70,12 +69,10 @@ public class Servico {
     }
 
     public List<EstabelecimentoDTO> getEstabelecimentosPorLocalizacao(BuscaEstabelecimentoDTO buscaEstabelecimentoDTO) {
-        List<Estabelecimento> estabelecimentosPorLocalizacao = estabelecimentoDAO.getEstabelecimentosPorLocalizacao(
+        return estabelecimentoDAO.getEstabelecimentosPorLocalizacao(
                 buscaEstabelecimentoDTO.getLatitude(),
                 buscaEstabelecimentoDTO.getLongitude(),
                 buscaEstabelecimentoDTO.getRaio(),
                 buscaEstabelecimentoDTO.getSeguimento().split(","));
-
-        return EntityConverter.toDTO(estabelecimentosPorLocalizacao);
     }
 }

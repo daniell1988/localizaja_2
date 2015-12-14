@@ -8,7 +8,8 @@
     </h:head>
     <h:body>
         <h:form prependId="false">
-            <p:commandButton value="Carregar banco" action="#{buscaEstabelecimentoMB.carregarBanco}"/>
+            <p:inputText value="#{buscaEstabelecimentoMB.pathFile}" />
+            <p:commandButton value="Carregar banco" action="#{buscaEstabelecimentoMB.carregarBanco}" process="@form" />
         </h:form>
     </h:body>
 </html>

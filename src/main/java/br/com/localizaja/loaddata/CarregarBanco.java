@@ -7,6 +7,7 @@ import br.com.localizaja.util.EntityConverter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Iterator;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -26,8 +27,8 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class CarregarBanco {
 
-    private static final Servico SERVICO = new Servico();
-    private static final String PATH_XLS = "C:\\Users\\Daniel\\Desktop\\carga.xlsx";
+    @EJB
+    private Servico servico;
 
     @PersistenceContext(name = "localizaja")
     private EntityManager entityManager;
@@ -35,11 +36,11 @@ public class CarregarBanco {
     public CarregarBanco() {
     }
 
-    public void carrega() throws Exception {
+    public void carrega(String fileXls) throws Exception {
 
         System.out.println("Iniciando");
 
-        try (FileInputStream arquivo = new FileInputStream(new File(PATH_XLS))) {
+        try (FileInputStream arquivo = new FileInputStream(new File(fileXls))) {
 
             System.out.println("Carregou arquivo");
 
@@ -63,7 +64,7 @@ public class CarregarBanco {
                             e.setTelefone(cell.getStringCellValue());
                             break;
                         case 2:
-                            GeoLocation coordenadasGeograficas = SERVICO.getCoordenadasGeograficas(cell.getStringCellValue()).get(0);
+                            GeoLocation coordenadasGeograficas = servico.getCoordenadasGeograficas(cell.getStringCellValue()).get(0);
                             e.setEnderecoCompleto(coordenadasGeograficas.getEnderecoCompleto());
                             e.setLatitude(e.getLatitude());
                             e.setLongitude(e.getLongitude());
