@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Cadastro de estabelecimento</title>
+        <script src="http://maps.google.com/maps/api/js?sensor=true|false" type="text/javascript"></script> 
+    </h:head>
+    <h:body>
+        <script type="text/javascript">
+            function geocode() {
+                var end = " ";
+                PF('geoMap').geocode(
+                        end.concat(
+                                document.getElementById('endereco').value,
+                                " ",
+                                document.getElementById('cidade').value,
+                                " ",
+                                document.getElementById('estado').value
+                                )
+                        );
+            }
+        </script>
+
+        <h:form prependId="false">
+
+            <p:growl id="mensagens" showDetail="true" sticky="true" /> 
+
+            <p:fieldset legend="Efetuar cadastro">
+                <p:outputPanel id="formularioCadastro">
+                    <h:panelGrid id="panelGridGeral" columns="2" style="margin-bottom:10px" cellpadding="1">
+                        <h:panelGroup>
+                            <h:panelGrid id="panelGridForm" columns="1" style="margin-bottom:10px" cellpadding="1">
+                                <p:outputLabel for="nomeEmpresa" value="Nome da Empresa:" />
+                                <p:inputText id="nomeEmpresa" value="#{cadastroEstabelecimentoMB.empresa.nomeEmpresa}" required="true" requiredMessage="Nome da empresa é obrigatório!"/>
+                                <br/>
+                                <p:outputLabel for="endereco" value="Endereço:" />
+                                <p:inputText id="endereco" value="#{cadastroEstabelecimentoMB.empresa.endereco}" required="true" requiredMessage="Endereço é obrigatório!"/>
+                                <br/>
+                                <p:outputLabel for="cidade" value="Cidade:" />
+                                <p:inputText id="cidade" value="#{cadastroEstabelecimentoMB.empresa.cidade}" required="true" requiredMessage="Cidade é obrigatório!"/>
+                                <br/>
+                                <p:outputLabel for="estado" value="Estado:" />
+                                <p:inputText id="estado" value="#{cadastroEstabelecimentoMB.empresa.estado}" required="true" requiredMessage="Estado é obrigatório!"/>
+                                <br/>
+                                <p:outputLabel for="telefone" value="Phone:" />
+                                <p:inputMask id="telefone" value="#{cadastroEstabelecimentoMB.empresa.telefone}" mask="(99)9999-9999"/>
+                                <br/>
+                                <p:outputLabel for="categoria" value="Segmento:" />
+                                <p:inputText id="categoria" value="#{cadastroEstabelecimentoMB.empresa.categoria}" required="true" requiredMessage="Segmento é obrigatório!"/>
+                                <p:watermark for="categoria" value="Separe por ," id="watermark" />
+                                <br/>
+                                <p:commandButton id="cadastroButton" value="Buscar" icon="ui-icon-search"
+                                                 onclick="geocode();" action="#{cadastroEstabelecimentoMB.buscarEnderecos()}"
+                                                 process="formularioCadastro" update="enderecosBuscados, mensagens"/>
+                            </h:panelGrid>
+                        </h:panelGroup>
+                        <h:panelGroup>
+                            <p:gmap id="geoGmap" widgetVar="geoMap" center="#{geocodeView.centerGeoMap}" zoom="11" type="ROADMAP" model="#{geocodeView.geoModel}" style="width:1000px;height:550px">
+                                <p:ajax event="geocode" listener="#{geocodeView.onGeocode}" update="@this"/>
+                            </p:gmap>
+                        </h:panelGroup>
+
+                    </h:panelGrid>
+                </p:outputPanel>
+
+                <p:dataTable id="enderecosBuscados" value="#{cadastroEstabelecimentoMB.resultadoEnderecos}" var="item" >
+                    <p:column headerText="Confirme o Endereço a ser Cadastrado">
+                        <p:commandLink value="#{item.enderecoCompleto}" action="#{cadastroEstabelecimentoMB.cadastrarEndereco()}" update="mensagens">
+                            <f:setPropertyActionListener value="#{item}" target="#{cadastroEstabelecimentoMB.enderecoSelecionado}"/>
+                        </p:commandLink>
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>
+        </h:form>
+    </h:body>
+</html>
