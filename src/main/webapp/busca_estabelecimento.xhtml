@@ -92,6 +92,9 @@
                     <p:column headerText="Telefone">
                         <h:outputText value="#{item.telefone}"/>
                     </p:column>
+                    <p:column headerText="Distância">
+                        <h:outputText value="#{item.distancia}"/>
+                    </p:column>
                 </p:dataTable>
                 <p:spacer height="20px" />
                 <p:dataTable id="leiloesBuscados" value="#{buscaEstabelecimentoMB.leiloes}" var="leilao">

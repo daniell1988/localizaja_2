@@ -2,8 +2,8 @@ package br.com.localizaja.servico;
 
 import br.com.localizaja.dao.EstabelecimentoDAO;
 import br.com.localizaja.dto.BuscaEstabelecimentoDTO;
-import br.com.localizaja.dto.EstabelecimentoDTO;
 import br.com.localizaja.dto.GeoLocation;
+import br.com.localizaja.dto.ResultadoBuscaDTO;
 import br.com.localizaja.entidade.Estabelecimento;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
@@ -68,10 +68,9 @@ public class Servico {
         estabelecimentoDAO.salvar(estabelecimento);
     }
 
-    public List<EstabelecimentoDTO> getEstabelecimentosPorLocalizacao(BuscaEstabelecimentoDTO buscaEstabelecimentoDTO) {
+    public List<ResultadoBuscaDTO> getEstabelecimentosPorLocalizacao(BuscaEstabelecimentoDTO buscaEstabelecimentoDTO) throws Exception {
         return estabelecimentoDAO.getEstabelecimentosPorLocalizacao(
-                buscaEstabelecimentoDTO.getLatitude(),
-                buscaEstabelecimentoDTO.getLongitude(),
+                buscaEstabelecimentoDTO.getEnderecoOrigem(),
                 buscaEstabelecimentoDTO.getRaio(),
                 buscaEstabelecimentoDTO.getSeguimento().split(","));
     }
